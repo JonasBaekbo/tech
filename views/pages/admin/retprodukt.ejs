@@ -1,0 +1,42 @@
+<%- include ./partials/dashboard_header %>
+
+    <body>
+        <div class="col-md-9">
+            <div id="panel-body">
+                <div id="productForm">
+                    <form encrypt="multipart/form-data" method="POST" action="/admin/retprodukt/<%= produkt.ID %>">
+                        <h2>Ret arrangement</h2>
+                        <p>
+                            <label>Navn:</label>
+                            <input type="text" name="navn" id="navn" value="<%= produkt.navn %>">
+                            <br>
+                        </p>
+                        <p>
+                            <label>Beskrivelse:</label>
+                            <input type="text" name="beskrivelse" id="beskrivelse" value="<%= produkt.beskrivelse %>">
+                            <br>
+                        </p>
+                        <p>
+                            <label>Pris:</label>
+                            <input type="text" name="pris" id="pris" value="<%= produkt.pris %>">
+                            <br>
+                        </p>
+
+                        <p>
+                            <input type="file" name="imgUploader" multiple id="productimage" value="<%= produkt.billede %>">
+                        </p>
+                        <p>Nuværende Billede:
+                            <img src="/images/<%= produkt.billede %>" alt="" width="200">
+                        </p>
+                        <button>Ret</button>
+                        <a href="/admin/produkter">
+                            <button>Annuller</button>
+                        </a>
+                        <span id="productsFormError" class="error"></span>
+                        <hr>`;
+                    </form>
+                </div>
+
+            </div>
+    </body>
+    <%- include ./partials/dashboard_footer %>

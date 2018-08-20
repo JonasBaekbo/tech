@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sample Site</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="/admin">Dashboard</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="/">Tilbage til siden</a>
+            </li>
+            <li>
+              <a href="/logout">Log ud</a>
+            </li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+      <!--/.container-fluid -->
+    </nav>
+    <nav class="navbar navbar-default col-md-3">
+      <div class="sidebar sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin">
+              <span data-feather="home"></span>
+              Forside
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Produkter</span>
+            <a class="d-flex align-items-center text-muted" href="#">
+              <span data-feather="plus-circle"></span>
+            </a>
+          </h6>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/produkter">
+              <span data-feather="file"></span>
+              Alle produkter
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/opretprodukt">
+              <span data-feather="shopping-cart"></span>
+              Opret produkter
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>

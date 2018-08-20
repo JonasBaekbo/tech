@@ -1,0 +1,32 @@
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="/">Template</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Forside
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/om">Om</a>
+                </li>
+            </ul>
+            <form class="form-inline mt-2 mt-md-0" onsubmit="return test();">
+                <input class="form-control mr-sm-2" type="text" placeholder="Søg.." id="search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="return test();">Søg</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<script>
+    function test() {
+        var input = document.getElementById("search").value;
+        window.location = `http://localhost:3000/produkt/soeg/${input}`; // Redirect til http://128.199.57.136:3000/produkt.html?search=(Hvad der er skrevet i søgebaren)
+        return false;
+    }
+</script>

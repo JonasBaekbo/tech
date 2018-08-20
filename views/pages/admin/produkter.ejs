@@ -1,0 +1,45 @@
+<%- include ./partials/dashboard_header %>
+
+    <body>
+        <div class="col-md-9">
+            <% arrangement.forEach(function (test){ %>
+                <!-- <div class="my-3 p-3 bg-white rounded box-shadow"> -->
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray col-md-8">
+                    <strong class="d-block text-gray-dark">
+                        <%= test.navn %> -
+                            <%= test.producent %>
+                                <br>
+                                <%= test.kategori %>
+                    </strong>
+                    <br>
+                    <%= test.pris %> kr.
+                </p>
+                <div class="row-align-items-end col-md-3">
+                    <a href="/admin/retprodukt/<%= test.ID %>" class="btn btn-small btn-info">
+                        <i class="glyphicon glyphicon-briefcase"></i>
+                    </a>
+
+                    <a class="btn btn-small btn-danger " onclick="slet(<%= test.id %>)" id="fjern">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </div>
+                <br>
+                <% }); %>
+        </div>
+        <% { %>
+            <script>
+                function slet(id) {
+                    if (confirm("Er du sikker på at du vil slette?")) { //Spørg om personen er sikker
+                        fetch('http://localhost:3000/slet/' + id)
+                            .then((response) => {
+
+                                window.location.replace('/admin/arrangementer');
+                            })
+
+                    }
+                }
+            </script>
+            <% } %>
+
+    </body>
+    <%- include ./partials/dashboard_footer %>

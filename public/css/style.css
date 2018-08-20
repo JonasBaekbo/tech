@@ -1,0 +1,34 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+
+body{
+    margin-top: 70px;
+    background-color: #4ABDAC;
+    color: #123456
+}
+body a{
+    color: #DFDCE3;
+}
+.card-body{
+    background-color: #F7B733
+}
+.card{border:none;}
+.jumbotron{
+    background-color: unset!important;
+}
+footer{
+    margin-top: 20px;
+    background-color: #343a40;
+    height: 370px;
+    color: rgba(255,255,255,.5);
+}
+.btn-primary{
+    background-color: #FC4A1A;
+    border: 1px solid #343a40;
+}
+.btn-primary:hover{
+    background-color: #343a40;
+}

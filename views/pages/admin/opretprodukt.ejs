@@ -1,0 +1,63 @@
+<%- include ./partials/dashboard_header %>
+
+    <body>
+        <div class="col-md-9">
+            <div id="panel-body">
+                <div id="productForm">
+                    <form encrypt="multipart/form-data" method="POST" action="/opret">
+                        <h2>Opret nyt arrangement</h2>
+                        <p>
+                            <label>Navn:</label>
+                            <input type="text" name="navn" id="navn" value="">
+                            <br>
+                        </p>
+                        <p>
+                            <label>Beskrivelse:</label>
+                            <input type="text" name="beskrivelse" id="beskrivelse" value="">
+                            <br>
+                        </p>
+                        <p>
+                            <label>Pris:</label>
+                            <input type="text" name="pris" id="pris" value="">
+                            <br>
+                        </p>
+                        <p>
+                            <label>Sal:</label>
+                            <select name="sal_id" id="sal_id">
+                            </select>
+                            <br>
+                        </p>
+                        <p>
+                            <label>Dato og tid:</label>
+                            <input type="datetime-local" id="dato" name="dato" value="">
+                            <br>
+                        </p>
+                        <p>
+                            <input type="file" name="productImage" id="productImage" value="">
+                        </p>
+                        <button>Opret</button>
+                        <a href="/admin/arrangementer">
+                            <button>Annuller</button>
+                        </a>
+                        <span id="productsFormError" class="error"></span>
+                        <hr>`;
+                    </form>
+                </div>
+
+            </div>
+            <script>
+                var salSelectElement = document.querySelector('#sal_id');
+                fetch('http://localhost:3000/sale').then(function (response) {
+                    return response.json();
+                }).then(function (kategori) {
+                    kategori.forEach(element => {
+                        var text = document.createTextNode(element.id + '. ' + element.Navn);
+                        var option = document.createElement('OPTION');
+                        option.appendChild(text);
+                        option.setAttribute('value', element.id)
+                        salSelectElement.appendChild(option);
+                    });
+                })
+            </script>
+    </body>
+    <%- include ./partials/dashboard_footer %>

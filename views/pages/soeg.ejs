@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../includes/head.ejs %>
+
+    <body>
+
+        <% include ../includes/header.ejs %>
+
+            <main role="main">
+                <div class="album py-5">
+                    <div class="container">
+                        <p>Du søgte efter
+                            <strong>
+                                <%= soegning %>
+                            </strong>
+                        </p>
+                        <p>Der var
+                            <%= resultater %> resultater</p>
+                        <div class="row">
+                            <% data.forEach(function (test){ %>
+                                <div class="col-md-3">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                <%= test.navn %>
+                                            </p>
+                                            <p class="card-text">
+                                                <%= test.beskrivelse %>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <a href="/produkt/<%= test.ID %>">
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary">Læs mere</button>
+                                                    </a>
+                                                </div>
+                                                <small class="text-muted">
+                                                    <%= test.pris.slice(0,4) %> kr.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <% include ../includes/footer.ejs %>
+    </body>
+
+
+</html>
