@@ -1,11 +1,10 @@
 const database = require('../config/mysql').connect();
-var multer = require('multer');
 var bodyParser = require('body-parser');
 const session = require('express-session');
+const service = require('../services/produkter');
 
 
 module.exports = function (app) {
-    app.use(bodyParser.json());
     // index page
     app.get('/admin/produkter', function (req, res) {
         var user = req.session.user;
@@ -15,15 +14,15 @@ module.exports = function (app) {
             res.redirect("/login");
             return;
         }
-        database.connect();
-        let sql = `SELECT produkter.*, kategori.kategori, producent.producent FROM(( produkter INNER JOIN kategori ON fk_kategori_id = kategori.ID) INNER JOIN producent ON fk_producent = producent.ID)`;
-        database.query(sql, function (err, data) {
+        service.getAll((err, result) => {
             if (err) {
-                console.log(err);
+                console.log(Date(), err);
+                res.status(500);
+            } else {
+                res.render('pages/admin/produkter', {
+                    titel: "Produkter", arrangement: result
+                })
             }
-            res.render('pages/admin/produkter', {
-                titel: "Produkter", arrangement: data
-            })
         });
     })
     app.get('/admin/opretprodukt', function (req, res) {
@@ -34,7 +33,22 @@ module.exports = function (app) {
             res.redirect("/login");
             return;
         }
-        res.render('pages/admin/opretprodukt', { titel: "Opret produkt" })
+
+        service.producent((err, producent) => {
+            if (err) {
+                console.log(Date(), err);
+                res.status(500);
+            } else {
+                service.kategori((err, kategori) => {
+                    if (err) {
+                        console.log(Date(), err);
+                        res.status(500);
+                    } else {
+                        res.render('pages/admin/opretprodukt', { titel: "Opret produkt", producent: producent, kategori: kategori })
+                    }
+                })
+            }
+        })
     })
 
     app.get('/admin/retprodukt/:id', function (req, res) {
@@ -51,7 +65,6 @@ module.exports = function (app) {
             if (err) {
                 console.log(err);
             }
-            console.log(data);
             res.render('pages/admin/retprodukt', {
                 titel: "Ret produkt", produkt: data[0]
             })
@@ -66,19 +79,24 @@ module.exports = function (app) {
         if (userId == null) {
             res.redirect("/login");
             return;
+        } else {
+            service.deleteById(req.params.id, (err, result) => {
+                if (err) {
+                    console.log(Date(), err);
+                    res.status(500);
+                } else {
+                    res.render('pages/index', { titel: "Forside", data: result });
+                }
+            })
         }
-        database.query(`DELETE FROM produkter WHERE id = ${req.params.id}`, (error, rows) => {
-            res.json(rows);
-        });
     });
     app.post('/opret', (req, res, next) => {
-        let image = 'no-image.png';
-        let sql = 'INSERT INTO arrangementer(navn, Pris, Dato, Sal_fk, beskrivelse, billede) VALUES (?, ?, FORMAT(dato, "yyyy-MM-ddTHH:mm:ss"), ?, ?, ?)';
+        let sql = 'INSERT INTO produkter(navn, pris, beskrivelse, fk_kategori_id, fk_producent, billede) VALUES (?, ?, ?, ?, ?, ?)';
 
         let productImage = req.body.productImage;
         console.log(req.body.dato);
         if (req.body.navn != '' && req.body.beskrivelse != '') {
-            database.query(`INSERT INTO arrangementer(navn, Pris, Dato, Sal_fk, beskrivelse, billede) VALUES ('${req.body.navn}', ${req.body.pris}, '${req.body.dato}', '${req.body.sal_id}', '${req.body.beskrivelse}', '${req.body.productImage}')`, function (err, data) {
+            database.query(`INSERT INTO arrangementer(navn, Pris, Dato, Sal_fk, beskrivelse, billede) VALUES ('${req.body.navn}', ${req.body.pris}, '${req.body.beskrivelse}', '${req.body.kategori}', '${req.body.producent}', '${req.body.productImage}')`, function (err, data) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -92,45 +110,18 @@ module.exports = function (app) {
             });
         }
     });
-    var Storage = multer.diskStorage({
-        destination: function (req, file, callback) {
-            callback(null, "/public/images");
-        },
-        filename: function (req, file, callback) {
-            callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
-        }
-    });
 
-    var upload = multer({
-        storage: Storage
-    }).single("imgUploader");
-
-    app.post('/updatetime', function (req, res, next) {
-        console.log(req.body);
-        req.session.cookie.expires = new Date(Date.now() + req.body.minute * 60 * 1000);
-        req.session.cookie.maxAge = req.body.minute * 60 * 1000
-        console.log(req);
-        res.redirect('/admin')
-    })
-    app.post('/admin/retprodukt/:id', function (req, res, next) { // selve routet som har put metoden. Opdatering af produkter.
+    app.put('/admin/retprodukt/:id', function (req, res, next) { // selve routet som har put metoden. Opdatering af produkter.
         if (req.body.navn != '' && req.body.beskrivelse != '' && !isNaN(req.body.pris)) {
-            upload(req, res, function (err) {
+
+            database.query(`UPDATE produkter SET navn= '${req.body.navn}', pris = ${req.body.pris} ,beskrivelse = '${req.body.beskrivelse}', billede = '${req.body.productImage}' WHERE id = ${req.params.id}`, function (err, data) {
+
                 if (err) {
-                    return res.end("Something went wrong!");
+                    console.log(err);
+                } else {
+                    res.redirect('/admin/produkter')
                 }
-                console.log(req);
-                return res.end("File uploaded sucessfully!.");
-            });
-
-            // database.query(`UPDATE produkter SET navn= '${req.body.navn}', pris = ${req.body.pris} ,beskrivelse = '${req.body.beskrivelse}', billede = '${req.body.productImage}' WHERE id = ${req.params.id}`, function (err, data) {
-
-            //     if (err) {
-            //         console.log(err);
-            //     } else {
-            //         res.redirect('/admin/produkter')
-            //     }
-            // })
-            // håndter billedet, hvis der er sendt et billede 
+            })
 
         };
     });

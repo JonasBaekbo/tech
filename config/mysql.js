@@ -4,7 +4,7 @@ function connect() {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'template'
+        database: 'tech'
     });
 }
 

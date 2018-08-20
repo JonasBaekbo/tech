@@ -22,14 +22,25 @@
                             <br>
                         </p>
                         <p>
-                            <label>Sal:</label>
-                            <select name="sal_id" id="sal_id">
+                            <label>Producent:</label>
+                            <select name="producent" id="producent">
+                                <% producent.forEach(function(test){ %>
+                                    <option value="<%= test.ID %>">
+                                        <%= test.producent %>
+                                    </option>
+                                    <% }) %>
                             </select>
                             <br>
                         </p>
                         <p>
-                            <label>Dato og tid:</label>
-                            <input type="datetime-local" id="dato" name="dato" value="">
+                            <label>Kategori:</label>
+                            <select name="kategori" id="kategori">
+                                <% kategori.forEach(function(test){ %>
+                                    <option value="<%= test.ID %>">
+                                        <%= test.kategori %>
+                                    </option>
+                                    <% }) %>
+                            </select>
                             <br>
                         </p>
                         <p>
